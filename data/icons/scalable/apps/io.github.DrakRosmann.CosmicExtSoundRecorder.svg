@@ -1,27 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ff7a6b"/>
-      <stop offset="1" stop-color="#d9364f"/>
-    </linearGradient>
-    <linearGradient id="mic" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#ffe3e3"/>
-    </linearGradient>
-  </defs>
-  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bg)"/>
-  <rect x="8" y="64" width="112" height="56" rx="28" fill="#000" opacity="0.06"/>
-  <!-- waveform -->
-  <g fill="#ffffff" opacity="0.55">
-    <rect x="18" y="58" width="6" height="12" rx="3"/>
-    <rect x="28" y="50" width="6" height="28" rx="3"/>
-    <rect x="94" y="50" width="6" height="28" rx="3"/>
-    <rect x="104" y="58" width="6" height="12" rx="3"/>
-  </g>
-  <!-- microphone -->
-  <rect x="50" y="24" width="28" height="50" rx="14" fill="url(#mic)"/>
-  <path d="M40 62a24 24 0 0 0 48 0" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
-  <rect x="60.5" y="85" width="7" height="13" rx="3" fill="#ffffff"/>
-  <rect x="48" y="96" width="32" height="7" rx="3.5" fill="#ffffff"/>
-  <circle cx="64" cy="49" r="6" fill="#d9364f"/>
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="8" y="40" width="240" height="176" rx="16" fill="url(#body)"/>
+<rect x="24" y="56" width="208" height="96" rx="12" fill="url(#screen)"/>
+<g fill="url(#wave)">
+<rect x="40" y="98" width="8" height="12" rx="4"/>
+<rect x="54" y="92" width="8" height="24" rx="4"/>
+<rect x="68" y="84" width="8" height="40" rx="4"/>
+<rect x="82" y="90" width="8" height="28" rx="4"/>
+<rect x="96" y="76" width="8" height="56" rx="4"/>
+<rect x="110" y="68" width="8" height="72" rx="4"/>
+<rect x="124" y="82" width="8" height="44" rx="4"/>
+<rect x="138" y="72" width="8" height="64" rx="4"/>
+<rect x="152" y="86" width="8" height="36" rx="4"/>
+<rect x="166" y="78" width="8" height="52" rx="4"/>
+<rect x="180" y="92" width="8" height="24" rx="4"/>
+<rect x="194" y="88" width="8" height="32" rx="4"/>
+<rect x="208" y="98" width="8" height="12" rx="4"/>
+</g>
+<rect x="40" y="180" width="56" height="8" rx="4" fill="#001534"/>
+<rect x="160" y="180" width="56" height="8" rx="4" fill="#001534"/>
+<circle cx="128" cy="184" r="22" fill="url(#button)"/>
+<circle cx="128" cy="184" r="11" fill="url(#record)"/>
+<defs>
+<linearGradient id="body" x1="128" y1="40" x2="128" y2="216" gradientUnits="userSpaceOnUse">
+<stop stop-color="#82A1CA"/>
+<stop offset="1" stop-color="#6582AA"/>
+</linearGradient>
+<linearGradient id="screen" x1="128" y1="56" x2="128" y2="152" gradientUnits="userSpaceOnUse">
+<stop stop-color="#142E50"/>
+<stop offset="1" stop-color="#001534"/>
+</linearGradient>
+<linearGradient id="wave" x1="40" y1="140" x2="216" y2="68" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C9E0FF"/>
+<stop offset="1" stop-color="#EED2FF"/>
+</linearGradient>
+<linearGradient id="button" x1="150" y1="162" x2="106" y2="206" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FAFCFF"/>
+<stop offset="1" stop-color="#E4F0FF"/>
+</linearGradient>
+<linearGradient id="record" x1="139" y1="173" x2="117" y2="195" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF8A8A"/>
+<stop offset="1" stop-color="#E5484D"/>
+</linearGradient>
+</defs>
 </svg>
