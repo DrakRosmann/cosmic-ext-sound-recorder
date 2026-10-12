@@ -1,0 +1,131 @@
+# Builds Sound Recorder on Debian 12, whose glibc (2.36) is the oldest of the
+# distributions with COSMIC, so that one build runs on all of them: Debian,
+# Ubuntu, Pop!_OS, Fedora, Arch, openSUSE... From it come a .deb, a .rpm, an
+# Arch package and a tarball, for x86_64 and aarch64. A tag v* publishes them
+# as a release, with a Flatpak bundle for each architecture.
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  NFPM_VERSION: 2.47.0
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+            target: x86_64
+            nfpm: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+            target: aarch64
+            nfpm: arm64
+    runs-on: ${{ matrix.runner }}
+    container: debian:bookworm
+    steps:
+      - name: Install the tools
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates curl git \
+            build-essential pkg-config libxkbcommon-dev libasound2-dev
+          curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/checkout@v7
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ matrix.target }}-cargo-${{ hashFiles('Cargo.lock') }}
+
+      - name: Build
+        run: cargo build --release --locked
+
+      - name: Test
+        run: cargo test --release --locked
+
+      - name: Package
+        run: |
+          case "$GITHUB_REF" in
+            refs/tags/v*) version="${GITHUB_REF#refs/tags/v}" ;;
+            *) version="$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -n1)" ;;
+          esac
+          mkdir -p dist
+
+          DESTDIR=pkgroot ./install.sh /usr --no-build
+          curl -sSfL "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_Linux_${{ matrix.nfpm }}.tar.gz" | tar xz nfpm
+          for packager in deb rpm archlinux; do
+            VERSION="$version" ARCH="${{ matrix.arch }}" ./nfpm pkg -f packaging/nfpm.yaml -p "$packager" -t dist/
+          done
+
+          name="cosmic-ext-sound-recorder-$version-${{ matrix.target }}"
+          mkdir -p "$name/bin"
+          cp target/release/cosmic-ext-sound-recorder "$name/bin/"
+          cp -r data install.sh uninstall.sh LICENSE README.md "$name/"
+          tar czf "dist/$name.tar.gz" "$name"
+          ls -l dist
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: packages-${{ matrix.target }}
+          path: dist/*
+
+  flatpak:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v7
+      - name: Add the COSMIC base app
+        run: flatpak install -y --noninteractive flathub com.system76.Cosmic.BaseApp//stable
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: cosmic-ext-sound-recorder-${{ matrix.arch }}.flatpak
+          manifest-path: flatpak/local.json
+          arch: ${{ matrix.arch }}
+          cache-key: flatpak-${{ matrix.arch }}-${{ hashFiles('Cargo.lock') }}
+          upload-artifact: false
+      - uses: actions/upload-artifact@v7
+        with:
+          name: flatpak-${{ matrix.arch }}
+          path: cosmic-ext-sound-recorder-${{ matrix.arch }}.flatpak
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build, flatpak]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes

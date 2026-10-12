@@ -1,0 +1,58 @@
+# .deb, .rpm and Arch packages from what `DESTDIR=pkgroot ./install.sh /usr
+# --no-build` puts in pkgroot/. VERSION and ARCH (amd64, arm64) come from the
+# environment: see .github/workflows/release.yml.
+name: cosmic-ext-sound-recorder
+arch: ${ARCH}
+platform: linux
+version: ${VERSION}
+release: 1
+section: sound
+priority: optional
+maintainer: DrakRosmann <DrakRosmann@users.noreply.github.com>
+description: |
+  Sound recorder and audio file player for COSMIC.
+  Records from any microphone, or from what the computer plays, showing a
+  live waveform or spectrum; browses and plays WAV, FLAC, MP3, Ogg Vorbis,
+  AAC/M4A and AIFF files with their waveform and details.
+vendor: DrakRosmann
+homepage: https://github.com/DrakRosmann/cosmic-ext-sound-recorder
+license: GPL-3.0-only
+
+contents:
+  - src: pkgroot/usr/bin/cosmic-ext-sound-recorder
+    dst: /usr/bin/cosmic-ext-sound-recorder
+  - src: pkgroot/usr/share/applications/io.github.DrakRosmann.CosmicExtSoundRecorder.desktop
+    dst: /usr/share/applications/io.github.DrakRosmann.CosmicExtSoundRecorder.desktop
+  - src: pkgroot/usr/share/icons/hicolor/scalable/apps/io.github.DrakRosmann.CosmicExtSoundRecorder.svg
+    dst: /usr/share/icons/hicolor/scalable/apps/io.github.DrakRosmann.CosmicExtSoundRecorder.svg
+  - src: pkgroot/usr/share/metainfo/io.github.DrakRosmann.CosmicExtSoundRecorder.metainfo.xml
+    dst: /usr/share/metainfo/io.github.DrakRosmann.CosmicExtSoundRecorder.metainfo.xml
+  - src: LICENSE
+    dst: /usr/share/licenses/cosmic-ext-sound-recorder/LICENSE
+
+overrides:
+  deb:
+    depends:
+      - libc6 (>= 2.36)
+      - libxkbcommon0
+      - libasound2 | libasound2t64
+  rpm:
+    depends:
+      - glibc
+      - libxkbcommon
+      - alsa-lib
+  archlinux:
+    depends:
+      - glibc
+      - gcc-libs
+      - libxkbcommon
+      - alsa-lib
+
+rpm:
+  summary: Sound recorder and audio file player for COSMIC
+  group: Applications/Multimedia
+deb:
+  fields:
+    Bugs: https://github.com/DrakRosmann/cosmic-ext-sound-recorder/issues
+archlinux:
+  packager: DrakRosmann <DrakRosmann@users.noreply.github.com>

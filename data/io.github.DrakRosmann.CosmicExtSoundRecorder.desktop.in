@@ -1,0 +1,20 @@
+[Desktop Entry]
+Type=Application
+Name=Sound Recorder
+Name[pt]=Gravador de som
+Name[pt_BR]=Gravador de som
+GenericName=Audio Recorder
+GenericName[pt]=Gravador de áudio
+GenericName[pt_BR]=Gravador de áudio
+Comment=Record sound, see it, and play your audio files
+Comment[pt]=Grave som, veja-o e ouça os seus ficheiros de áudio
+Comment[pt_BR]=Grave som, veja-o e ouça seus arquivos de áudio
+Keywords=record;recorder;microphone;voice;audio;sound;waveform;spectrum;player;COSMIC;
+Keywords[pt]=gravar;gravador;microfone;voz;áudio;som;forma de onda;espetro;leitor;
+Keywords[pt_BR]=gravar;gravador;microfone;voz;áudio;som;forma de onda;espectro;player;
+Exec=@bindir@/cosmic-ext-sound-recorder %F
+Icon=io.github.DrakRosmann.CosmicExtSoundRecorder
+Terminal=false
+StartupNotify=true
+Categories=AudioVideo;Audio;Recorder;Player;
+MimeType=audio/x-wav;audio/wav;audio/vnd.wave;audio/flac;audio/x-flac;audio/mpeg;audio/mp3;audio/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/mp4;audio/x-m4a;audio/aac;audio/x-aiff;audio/aiff;audio/x-caf;audio/x-matroska;

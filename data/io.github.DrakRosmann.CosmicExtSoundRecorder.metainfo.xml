@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.DrakRosmann.CosmicExtSoundRecorder</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <developer id="io.github.drakrosmann">
+    <name>DrakRosmann</name>
+  </developer>
+  <name>Sound Recorder</name>
+  <name xml:lang="pt">Gravador de som</name>
+  <name xml:lang="pt-BR">Gravador de som</name>
+  <summary>Record sound, see it, and play your audio files</summary>
+  <summary xml:lang="pt">Grave som, veja-o e ouça os seus ficheiros de áudio</summary>
+  <summary xml:lang="pt-BR">Grave som, veja-o e ouça seus arquivos de áudio</summary>
+  <description>
+    <p>A simple sound recorder and audio file player for the COSMIC™ desktop, built with libcosmic, that shows the sound as you record it and as you play it.</p>
+    <ul>
+      <li>Record from any microphone, or from what the computer plays</li>
+      <li>See the sound as you record, as a scrolling waveform or a spectrum</li>
+      <li>Pause, resume, save or discard</li>
+      <li>Browse your recordings and open WAV, FLAC, MP3, Ogg Vorbis, AAC/M4A, AIFF and CAF files</li>
+      <li>Play them, with the whole waveform to click and drag through, and a live spectrum</li>
+      <li>See their codec, sample rate, channels, bit depth and size; rename and delete them</li>
+    </ul>
+    <p xml:lang="pt">Um gravador de som simples para o ambiente COSMIC™, feito com a libcosmic.</p>
+    <p xml:lang="pt-BR">Um gravador de som simples para o ambiente COSMIC™, feito com a libcosmic.</p>
+  </description>
+  <url type="homepage">https://github.com/DrakRosmann/cosmic-ext-sound-recorder</url>
+  <url type="bugtracker">https://github.com/DrakRosmann/cosmic-ext-sound-recorder/issues</url>
+  <url type="vcs-browser">https://github.com/DrakRosmann/cosmic-ext-sound-recorder</url>
+  <icon type="stock">io.github.DrakRosmann.CosmicExtSoundRecorder</icon>
+  <launchable type="desktop-id">io.github.DrakRosmann.CosmicExtSoundRecorder.desktop</launchable>
+  <content_rating type="oars-1.1"/>
+  <branding>
+    <color type="primary" scheme_preference="light">#ffb3ab</color>
+    <color type="primary" scheme_preference="dark">#7a1f2e</color>
+  </branding>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Recording, with the waveform as it comes</caption>
+      <image>https://raw.githubusercontent.com/DrakRosmann/cosmic-ext-sound-recorder/main/assets/screenshot-record.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Playing a file</caption>
+      <image>https://raw.githubusercontent.com/DrakRosmann/cosmic-ext-sound-recorder/main/assets/screenshot-play.png</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="0.1.0" date="2026-10-11">
+      <description>
+        <p>First release.</p>
+      </description>
+    </release>
+  </releases>
+  <provides>
+    <binary>cosmic-ext-sound-recorder</binary>
+  </provides>
+  <categories>
+    <category>AudioVideo</category>
+    <category>Audio</category>
+    <category>Recorder</category>
+  </categories>
+  <keywords>
+    <keyword>recorder</keyword>
+    <keyword>microphone</keyword>
+    <keyword>waveform</keyword>
+    <keyword>spectrum</keyword>
+    <keyword>COSMIC</keyword>
+  </keywords>
+</component>

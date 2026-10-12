@@ -1,0 +1,39 @@
+[package]
+name = "cosmic-ext-sound-recorder"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+description = "Record sound, see it, and browse and play audio files, for the COSMIC desktop"
+repository = "https://github.com/DrakRosmann/cosmic-ext-sound-recorder"
+
+[dependencies]
+# The PulseAudio host speaks the protocol itself: no libpulse needed, and it
+# works with PipeWire too. Without a server, cpal falls back to ALSA.
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+cpal = { version = "0.18", features = ["pulseaudio"] }
+dirs = "6"
+hound = "3.5"
+i18n-embed = { version = "0.16", features = ["fluent-system", "desktop-requester"] }
+i18n-embed-fl = "0.10"
+rust-embed = "8"
+rustfft = "6.4"
+symphonia = { version = "0.5", features = ["all"] }
+tokio = { version = "1", features = ["full"] }
+url = "2"
+libcosmic = { git = "https://github.com/pop-os/libcosmic", rev = "03c8f93b294ad239ea935f6dd3c14a15acde8d0d", default-features = false, features = [
+    "a11y",
+    "about",
+    "dbus-config",
+    "multi-window",
+    "tokio",
+    "wayland",
+    "winit",
+    "wgpu",
+    "x11",
+    "xdg-portal",
+] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+strip = true

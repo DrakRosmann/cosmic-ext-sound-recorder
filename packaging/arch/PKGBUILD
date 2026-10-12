@@ -1,0 +1,40 @@
+# Builds Sound Recorder from source, for Arch and its derivatives:
+#   makepkg -si
+# (The releases also carry a ready .pkg.tar.zst: sudo pacman -U ...)
+pkgname=cosmic-ext-sound-recorder
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Sound recorder and audio file player for COSMIC, with a live waveform and spectrum"
+arch=('x86_64' 'aarch64')
+url="https://github.com/DrakRosmann/cosmic-ext-sound-recorder"
+license=('GPL-3.0-only')
+depends=('glibc' 'gcc-libs' 'libxkbcommon' 'alsa-lib')
+makedepends=('cargo' 'git')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+options=('!lto')
+
+prepare() {
+    cd "$pkgname-$pkgver"
+    export RUSTUP_TOOLCHAIN=stable
+    cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+    cd "$pkgname-$pkgver"
+    export RUSTUP_TOOLCHAIN=stable
+    export CARGO_TARGET_DIR=target
+    cargo build --frozen --release
+}
+
+check() {
+    cd "$pkgname-$pkgver"
+    export RUSTUP_TOOLCHAIN=stable
+    cargo test --frozen --release
+}
+
+package() {
+    cd "$pkgname-$pkgver"
+    DESTDIR="$pkgdir" ./install.sh /usr --no-build
+    install -Dm0644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
