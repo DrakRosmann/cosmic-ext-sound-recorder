@@ -8,6 +8,8 @@ mod widgets;
 use std::path::PathBuf;
 
 fn main() -> cosmic::iced::Result {
+    pulse_cookie_fallback();
+
     let languages = i18n_embed::DesktopLanguageRequester::requested_languages();
     i18n::init(&languages);
 
@@ -32,6 +34,27 @@ fn main() -> cosmic::iced::Result {
     cosmic::app::run::<app::App>(settings, files)
 }
 
+/// The PulseAudio client sends an empty cookie when it can't read one, as in
+/// Flatpak, and PipeWire turns that down; libpulse sends zeros instead, which
+/// it takes. Point the client at zeros too, before any thread starts.
+fn pulse_cookie_fallback() {
+    if std::env::var_os("PULSE_COOKIE").is_some() {
+        return;
+    }
+    let home = dirs::home_dir().unwrap_or_default();
+    if home.join(".config/pulse/cookie").exists() || home.join(".pulse-cookie").exists() {
+        return;
+    }
+    let Some(dir) = dirs::cache_dir() else {
+        return;
+    };
+    let cookie = dir.join("cosmic-ext-sound-recorder-pulse-cookie");
+    if std::fs::create_dir_all(&dir).is_ok() && std::fs::write(&cookie, [0u8; 256]).is_ok() {
+        // SAFETY: nothing else runs yet to read the environment.
+        unsafe { std::env::set_var("PULSE_COOKIE", cookie) };
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::audio::{file, player::Player, recorder};
@@ -41,6 +64,7 @@ mod tests {
     #[test]
     #[ignore]
     fn record_read_play() {
+        super::pulse_cookie_fallback();
         let (devices, default) = recorder::input_devices();
         eprintln!("default {default:?}");
         for d in &devices {

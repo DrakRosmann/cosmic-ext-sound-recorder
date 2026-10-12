@@ -2,7 +2,7 @@
 #   makepkg -si
 # (The releases also carry a ready .pkg.tar.zst: sudo pacman -U ...)
 pkgname=cosmic-ext-sound-recorder
-pkgver=0.1.1
+pkgver=0.1.2
 pkgrel=1
 pkgdesc="Sound recorder and audio file player for COSMIC, with a live waveform and spectrum"
 arch=('x86_64' 'aarch64')
