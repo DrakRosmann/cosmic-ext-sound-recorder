@@ -38,7 +38,7 @@
         {
           "type": "git",
           "url": "https://github.com/DrakRosmann/cosmic-ext-sound-recorder.git",
-          "commit": "edbb55f46ff3d2c16402228705d6718b05824f65"
+          "commit": "8eb85780c704c6de8333d4c513390f1f45e8c2f3"
         },
         "cargo-sources.json"
       ]
